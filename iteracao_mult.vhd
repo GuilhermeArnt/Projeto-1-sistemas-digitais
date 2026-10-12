@@ -27,7 +27,7 @@ architecture simples of iteracao_mult is
 
   begin 
     -- decidindo a operação a ser feita na iteração
-    op <= prod_d_in & BA_in;
+    op <= prod_d_in(0) & BA_in;
 
     -- conversão para tipo signed para permitir a iteração com sinal
     prod_c_s <= signed(prod_c_in);
