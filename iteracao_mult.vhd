@@ -18,20 +18,20 @@ end entity;
 
 architecture simples of iteracao_mult is
   signal op : std_logic_vector(1 downto 0);
-  signal prod_c_s : signed(3 downto 0);
-  signal mcando_s : signed(3 downto 0);
-  signal res_op : signed(3 downto 0);
+  signal prod_c_s : signed(4 downto 0);
+  signal mcando_s : signed(4 downto 0);
+  signal res_op : signed(4 downto 0);
 
-  signal vetor_concat : STD_LOGIC_VECTOR(8 downto 0); -- para concatenar tudo
-  signal vetor_desloc : STD_LOGIC_VECTOR(8 downto 0); -- para deslocar tudo de uma vez
+  signal vetor_concat : STD_LOGIC_VECTOR(9 downto 0); -- para concatenar tudo
+  signal vetor_desloc : STD_LOGIC_VECTOR(9 downto 0); -- para deslocar tudo de uma vez
 
   begin 
     -- decidindo a operação a ser feita na iteração
     op <= prod_d_in(0) & BA_in;
 
     -- conversão para tipo signed para permitir a iteração com sinal
-    prod_c_s <= signed(prod_c_in);
-    mcando_s <= signed(mcando);
+    prod_c_s <= signed(prod_c_in(3) & prod_c_in);
+    mcando_s <= signed(mcando(3) & mcando);
 
     --realizando a operação conforme operando
     res_op <= prod_c_s + mcando_s when op = "01" else
@@ -42,7 +42,7 @@ architecture simples of iteracao_mult is
     vetor_concat <= std_logic_vector(res_op) & prod_d_in & BA_in;
 
     --deslocando à direita
-    vetor_desloc <= vetor_concat(8) & vetor_concat(8 downto 1);
+    vetor_desloc <= vetor_concat(9) & vetor_concat(9 downto 1);
 
     -- valores resultantes da iteração (a serem utilizados para a resposta final ou para a próxima iteração)
     prod_c_out <= vetor_desloc(8 downto 5); -- 4 bits mais significativos do resultado da iteração
